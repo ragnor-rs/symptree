@@ -1,0 +1,214 @@
+{
+  "algorithm_id": "symptom_demo_adult",
+  "version": "1.0.0",
+  "metadata": {
+    "name": {
+      "ru": "ДЕМО: пример дерева решений (не медицинская рекомендация)",
+      "kk": "ДЕМО: шешім ағашының мысалы (медициналық кеңес емес)"
+    },
+    "category": "demo",
+    "age_group": "adult",
+    "estimated_time_minutes": 2
+  },
+  "entry_point": "q_demo_1",
+  "nodes": {
+    "q_demo_1": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 1: признак A присутствует?",
+        "kk": "ДЕМО, 1-сұрақ: A белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_emergency" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_2" }
+      ]
+    },
+    "q_demo_2": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 2: признак B присутствует?",
+        "kk": "ДЕМО, 2-сұрақ: B белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_urgent" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_3" }
+      ]
+    },
+    "q_demo_3": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 3: признак C присутствует?",
+        "kk": "ДЕМО, 3-сұрақ: C белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_urgent" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_4" }
+      ]
+    },
+    "q_demo_4": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 4: признак D присутствует?",
+        "kk": "ДЕМО, 4-сұрақ: D белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_routine" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_5" }
+      ]
+    },
+    "q_demo_5": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 5: признак E присутствует?",
+        "kk": "ДЕМО, 5-сұрақ: E белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_routine" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_6" }
+      ]
+    },
+    "q_demo_6": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 6: признак F присутствует?",
+        "kk": "ДЕМО, 6-сұрақ: F белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_pharmacy" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_7" }
+      ]
+    },
+    "q_demo_7": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 7: признак G присутствует?",
+        "kk": "ДЕМО, 7-сұрақ: G белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_pharmacy" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_8" }
+      ]
+    },
+    "q_demo_8": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 8: признак H присутствует?",
+        "kk": "ДЕМО, 8-сұрақ: H белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_routine" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "q_demo_9" }
+      ]
+    },
+    "q_demo_9": {
+      "type": "question",
+      "text": {
+        "ru": "ДЕМО, вопрос 9: признак I присутствует?",
+        "kk": "ДЕМО, 9-сұрақ: I белгісі бар ма?"
+      },
+      "options": [
+        { "value": "yes", "label": { "ru": "Да", "kk": "Иә" }, "next": "conclusion_demo_urgent" },
+        { "value": "no", "label": { "ru": "Нет", "kk": "Жоқ" }, "next": "conclusion_demo_self_care" }
+      ]
+    },
+    "conclusion_demo_emergency": {
+      "type": "conclusion",
+      "urgency": "emergency",
+      "diagnosis": {
+        "ru": "ДЕМО-исход 1: пример экстренного исхода. Это не медицинская рекомендация.",
+        "kk": "ДЕМО-қорытынды 1: шұғыл қорытынды мысалы. Бұл медициналық кеңес емес."
+      },
+      "action": {
+        "ru": "ДЕМО: пример действия для экстренного исхода — запись в клинику не предлагается.",
+        "kk": "ДЕМО: шұғыл қорытынды үшін әрекет мысалы — клиникаға жазылу ұсынылмайды."
+      },
+      "specialist": null,
+      "tests": [],
+      "additional_tests": [],
+      "preparation": {},
+      "clinic_action": "bypass_appointment",
+      "follow_up_days": null
+    },
+    "conclusion_demo_urgent": {
+      "type": "conclusion",
+      "urgency": "urgent",
+      "diagnosis": {
+        "ru": "ДЕМО-исход 2: пример срочного исхода с анализами. Это не медицинская рекомендация.",
+        "kk": "ДЕМО-қорытынды 2: талдаулары бар шұғыл қорытынды мысалы. Бұл медициналық кеңес емес."
+      },
+      "action": {
+        "ru": "ДЕМО: пример действия — предлагается запись к специалисту.",
+        "kk": "ДЕМО: әрекет мысалы — маманға жазылу ұсынылады."
+      },
+      "specialist": "neurologist",
+      "tests": ["demo_test_a", "demo_test_b"],
+      "additional_tests": ["demo_test_c"],
+      "preparation": {
+        "demo_test_a": {
+          "ru": "ДЕМО: пример подготовки к анализу A.",
+          "kk": "ДЕМО: A талдауына дайындық мысалы."
+        },
+        "demo_test_b": {
+          "ru": "ДЕМО: пример подготовки к анализу B.",
+          "kk": "ДЕМО: B талдауына дайындық мысалы."
+        }
+      },
+      "clinic_action": "book_appointment",
+      "follow_up_days": 3
+    },
+    "conclusion_demo_routine": {
+      "type": "conclusion",
+      "urgency": "routine",
+      "diagnosis": {
+        "ru": "ДЕМО-исход 3: пример планового исхода. Это не медицинская рекомендация.",
+        "kk": "ДЕМО-қорытынды 3: жоспарлы қорытынды мысалы. Бұл медициналық кеңес емес."
+      },
+      "action": {
+        "ru": "ДЕМО: пример действия — предлагается плановая запись.",
+        "kk": "ДЕМО: әрекет мысалы — жоспарлы жазылу ұсынылады."
+      },
+      "specialist": "therapist",
+      "tests": [],
+      "additional_tests": [],
+      "preparation": {},
+      "clinic_action": "book_appointment",
+      "follow_up_days": 14
+    },
+    "conclusion_demo_pharmacy": {
+      "type": "conclusion",
+      "urgency": "self_care",
+      "diagnosis": {
+        "ru": "ДЕМО-исход 4: пример исхода с направлением в аптеку. Это не медицинская рекомендация.",
+        "kk": "ДЕМО-қорытынды 4: дәріханаға жіберу мысалы. Бұл медициналық кеңес емес."
+      },
+      "action": {
+        "ru": "ДЕМО: пример действия — запись не нужна.",
+        "kk": "ДЕМО: әрекет мысалы — жазылу қажет емес."
+      },
+      "specialist": null,
+      "tests": [],
+      "additional_tests": [],
+      "preparation": {},
+      "clinic_action": "recommend_pharmacy",
+      "follow_up_days": null
+    },
+    "conclusion_demo_self_care": {
+      "type": "conclusion",
+      "urgency": "self_care",
+      "diagnosis": {
+        "ru": "ДЕМО-исход 5: пример исхода самопомощи. Это не медицинская рекомендация.",
+        "kk": "ДЕМО-қорытынды 5: өзіне-өзі көмек көрсету мысалы. Бұл медициналық кеңес емес."
+      },
+      "action": {
+        "ru": "ДЕМО: пример действия — наблюдение без записи.",
+        "kk": "ДЕМО: әрекет мысалы — жазылусыз бақылау."
+      },
+      "specialist": null,
+      "tests": [],
+      "additional_tests": [],
+      "preparation": {},
+      "clinic_action": "recommend_self_care",
+      "follow_up_days": null
+    }
+  }
+}

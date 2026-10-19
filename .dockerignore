@@ -1,0 +1,38 @@
+# Keep the build context small. The core/messaging images copy prebuilt fat jars
+# (whitelisted below); the admin-panel image copies its prebuilt Vite bundle
+# (admin-panel/dist, produced by scripts/deploy.sh before the image build).
+.git
+.gradle
+.kotlin
+.idea
+.claude
+.tmp-claude
+logs
+ideas
+specs
+
+# Secrets / local env — never ship into an image layer.
+.env
+.env.local
+scripts/secrets*.env
+
+# Exclude all build output, then whitelist just the two fat jars the JVM images need.
+**/build/
+!core/build/
+!core/build/libs/
+!core/build/libs/core.jar
+!messaging/build/
+!messaging/build/libs/
+!messaging/build/libs/messaging.jar
+
+# admin-panel local-only artifacts. dist/ is intentionally NOT ignored — it's the
+# prebuilt bundle the image copies in.
+admin-panel/node_modules
+admin-panel/coverage
+admin-panel/.vite
+
+# Misc
+*.iml
+.DS_Store
+deliverables-*.txt
+*-deploy-*.tar.gz

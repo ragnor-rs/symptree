@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gate:
+    name: detekt + test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # JDK 21 for core/messaging.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      # Node is NOT optional: admin-panel registers a task named `test` that
+      # shells out to `npm test`, and `check` depends on it — so the aggregate
+      # `./gradlew test` needs npm on the PATH even for a backend-only change.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: admin-panel/package-lock.json
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      # The integration tests start Postgres via Testcontainers, which needs a
+      # working Docker daemon. ubuntu-latest ships one.
+      - name: Gate
+        run: ./gradlew detekt test
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            core/build/reports/
+            messaging/build/reports/
+            core/build/test-results/
+            messaging/build/test-results/

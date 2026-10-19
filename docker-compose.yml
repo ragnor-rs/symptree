@@ -1,0 +1,141 @@
+# symptree — Telegram bot + web admin panel + Postgres.
+#
+# Four services on one box: postgres, core (Ktor backend), messaging (Telegram bot),
+# admin-panel (Vite SPA behind nginx, which reverse-proxies /api → core). Service
+# names double as the compose-network DNS names referenced across the stack
+# (core:8080, messaging:8084).
+#
+# The remote .env written by scripts/deploy.sh is the SINGLE SOURCE OF TRUTH for
+# every ${VAR} below — there are deliberately NO ${VAR:-default} fallbacks, so a
+# var missing from .env surfaces as an empty value (and the fail-fast config guards
+# in CoreConfig/MessagingConfig reject it loudly) rather than a silent wrong default.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: symptree-postgres
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      # No initdb.d mounts: core applies its own migrations at startup
+      # (MigrationRunner). Postgres just provisions an empty symptree DB.
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  core:
+    init: true
+    build:
+      context: .
+      dockerfile: core/Dockerfile
+    container_name: symptree-core
+    mem_limit: 768m
+    memswap_limit: 768m
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      # Database
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # Backend
+      - PORT=8080
+      - PLATFORM_ADMIN_API_KEY=${PLATFORM_ADMIN_API_KEY}
+      - BOT_INGRESS_SHARED_SECRET=${BOT_INGRESS_SHARED_SECRET}
+      - BOT_INTERNAL_SHARED_SECRET=${BOT_INTERNAL_SHARED_SECRET}
+      - BOT_INTERNAL_BASE_URL=http://messaging:8084
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL}
+      - SYMPTREE_PII_KEY=${SYMPTREE_PII_KEY}
+      - ADMIN_TOKEN_SECRET=${ADMIN_TOKEN_SECRET}
+      - ADMIN_TOKEN_TTL_MINUTES=${ADMIN_TOKEN_TTL_MINUTES}
+    ports:
+      - "8080:8080"
+    volumes:
+      # MigrationRunner reads a relative `database/` dir from the WORKDIR (/app).
+      - ./database:/app/database:ro
+      - ./logs:/var/log
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+    restart: unless-stopped
+
+  messaging:
+    init: true
+    build:
+      context: .
+      dockerfile: messaging/Dockerfile
+    container_name: symptree-messaging
+    mem_limit: 512m
+    memswap_limit: 512m
+    depends_on:
+      core:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - BACKEND_URL=http://core:8080
+      - CLINIC_SLUG=${CLINIC_SLUG}
+      - BOT_INGRESS_SHARED_SECRET=${BOT_INGRESS_SHARED_SECRET}
+      - BOT_INTERNAL_SHARED_SECRET=${BOT_INTERNAL_SHARED_SECRET}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - PORT=8084
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./logs:/var/log
+    restart: unless-stopped
+
+  admin-panel:
+    init: true
+    build:
+      context: .
+      dockerfile: admin-panel/Dockerfile
+    container_name: symptree-admin-panel
+    mem_limit: 256m
+    memswap_limit: 256m
+    depends_on:
+      core:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+      - "80:80"
+    healthcheck:
+      # nginx alpine ships wget (not curl). Use 127.0.0.1 (not localhost) — busybox
+      # wget resolves localhost to IPv6 ::1, but nginx listens on IPv4 only.
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,21 @@
+{
+  "id": "chatcmpl-test-intent-1",
+  "object": "chat.completion",
+  "created": 1717238400,
+  "model": "gpt-4o-2024-08-06",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"intent\":\"SYMPTOM\",\"confidence\":0.95,\"reason\":\"user describes a headache\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 100,
+    "completion_tokens": 20,
+    "total_tokens": 120
+  }
+}

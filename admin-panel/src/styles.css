@@ -1,0 +1,359 @@
+:root {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --border: #d9dde3;
+  --text: #1c2430;
+  --muted: #6b7785;
+  --primary: #2563eb;
+  --danger: #dc2626;
+  --emergency: #dc2626;
+  --urgent: #ea580c;
+  --routine: #16a34a;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+}
+
+button.primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+button.danger,
+button.danger-text {
+  color: var(--danger);
+}
+
+button.danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+button.danger-text {
+  border: none;
+  background: none;
+  padding: 0.2rem 0.4rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: inherit;
+}
+
+/* Give native selects room for the arrow and align their height with inputs. */
+select {
+  min-height: 2rem;
+}
+
+/* layout */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.nav a.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.lang {
+  border: none;
+  border-radius: 0;
+  padding: 0.3rem 0.6rem;
+  background: var(--panel);
+}
+
+.lang.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.content {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* tables */
+table.grid {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table.grid th,
+table.grid td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.row-deleted {
+  opacity: 0.55;
+}
+
+/* badges */
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: #eef1f5;
+  color: var(--muted);
+}
+
+.badge.urgency-emergency {
+  background: var(--emergency);
+  color: #fff;
+}
+
+.badge.urgency-urgent {
+  background: var(--urgent);
+  color: #fff;
+}
+
+.badge.urgency-routine {
+  background: var(--routine);
+  color: #fff;
+}
+
+/* forms + fields */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.checkbox {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.4rem;
+}
+
+.form-actions,
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.notice {
+  color: var(--urgent);
+}
+
+.hint,
+.muted,
+.empty {
+  color: var(--muted);
+}
+
+/* modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--panel);
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: min(520px, 92vw);
+  max-height: 90vh;
+  overflow: auto;
+}
+
+/* login */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: var(--panel);
+  padding: 2rem;
+  border-radius: 12px;
+  width: min(360px, 92vw);
+  border: 1px solid var(--border);
+}
+
+.login-lang {
+  margin-bottom: 1rem;
+}
+
+/* schedule */
+.weekly-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.weekday {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  background: var(--panel);
+}
+
+.weekday-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.interval {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.25rem 0;
+}
+
+.time-off-add {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Drop the stray field margin so the inputs and the button bottom-align cleanly. */
+.time-off-add .field {
+  margin-bottom: 0;
+}
+
+/* conclusion */
+.conclusion {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  background: var(--panel);
+  margin-top: 1rem;
+}
+
+.conclusion dl {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.conclusion dt {
+  color: var(--muted);
+}
+
+.walk {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+}
+
+.walk-turn {
+  margin: 0.3rem 0;
+}
+
+.node-ref {
+  font-family: ui-monospace, monospace;
+  color: var(--muted);
+  margin-right: 0.75rem;
+}

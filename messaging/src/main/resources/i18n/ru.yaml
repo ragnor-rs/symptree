@@ -1,0 +1,64 @@
+# FR-VWRNDR — Russian view-layer catalog (the single frontend i18n source).
+#
+# Flat Map<String, String> keyed by dot-notation paths (loaded by
+# com.symptree.messaging.i18n.MessageCatalog.loadFromClasspath). One disjoint key
+# set spanning BOTH paths: ingress chrome + reminder/feedback/booking-outgoing.
+# Keep in lockstep with kk.yaml — same key set, language-specific values.
+# {param} tokens are interpolated by the renderer.
+
+# --- Welcome + goal-pick menu -------------------------------------------------
+bot.welcome.text: "Здравствуйте! Я помогу разобраться с симптомами и записаться к врачу."
+bot.welcome.menu_prompt: "Чем я могу вам помочь?"
+bot.welcome.goal.symptom_consultation: "🩺 Разобраться с симптомами"
+bot.welcome.goal.appointment_booking: "📅 Записаться к врачу"
+bot.welcome.goal.service_info: "ℹ️ Узнать об услугах"
+bot.welcome.unknown_goal: "Не удалось распознать выбор. Пожалуйста, выберите вариант из меню."
+
+# --- Symptomizer prompts ------------------------------------------------------
+bot.symptom.prompt_main_complaint: "Расскажите, пожалуйста, что вас беспокоит."
+bot.symptom.llm_unavailable: "Сейчас я не могу разобрать ответ. Пожалуйста, выберите вариант из меню ниже."
+bot.symptom.reprompt.out_of_set: "Я не смог сопоставить ваш ответ с вариантами. Пожалуйста, выберите один из пунктов меню."
+bot.symptom.reprompt.low_confidence: "Не уверен, что правильно понял. Уточните, пожалуйста, выбрав вариант из меню."
+bot.symptom.reprompt.null_pick: "Не получилось распознать ответ. Выберите, пожалуйста, один из вариантов."
+bot.symptom.reprompt.non_symptom_intent: "Похоже, ваш вопрос не про симптомы. Если хотите продолжить, выберите вариант из меню."
+bot.symptom.reprompt.menu_header: "Пожалуйста, выберите подходящий вариант:"
+bot.symptom.no_algorithm_match: "К сожалению, у этой клиники пока нет сценария для такой жалобы. Попробуйте описать симптом иначе или выберите другой вариант из меню."
+
+# --- Stub goal flows ----------------------------------------------------------
+bot.booking.coming_soon: "Запись к врачу скоро будет доступна в боте. Пока, пожалуйста, свяжитесь с клиникой напрямую."
+bot.faq.coming_soon: "Информация об услугах скоро появится. Пока вы можете уточнить детали у администратора клиники."
+
+# --- Auto-booking confirm/decline + outcome -----------------------------------
+bot.booking.confirm_slot: "Доктор {doctor} — {datetime} — подтвердить запись?"
+bot.booking.confirm_yes: "✅ Да, записаться"
+bot.booking.confirm_no: "🔄 Другое время"
+bot.booking.no_slots: "К сожалению, сейчас нет свободного времени для записи. Пожалуйста, свяжитесь с клиникой напрямую."
+bot.booking.confirmed: "Готово! Вы записаны к {doctor} на {datetime}. Мы пришлём напоминание."
+bot.booking.contact_clinic: "Хорошо. Чтобы подобрать удобное время, пожалуйста, свяжитесь с клиникой напрямую."
+
+# --- Conclusion ---------------------------------------------------------------
+# Urgency icons are view artifacts selected off the Urgency enum (AC-VWRNDR.7);
+# language-independent, so ru and kk hold the same glyph.
+bot.conclusion.urgency.emergency: "🚨"
+bot.conclusion.urgency.urgent: "⚠️"
+bot.conclusion.urgency.routine: "📌"
+bot.conclusion.urgency.self_care: "🏠"
+bot.conclusion.tests: "Предварительные исследования"
+bot.conclusion.cta.book: "Записаться сейчас"
+bot.conclusion.cta.book_prompt: "Готовы записаться на приём?"
+bot.conclusion.cta.emergency: "Срочно обратитесь в скорую помощь или ближайшее отделение."
+bot.conclusion.cta.pharmacy: "Обратитесь в аптеку за безрецептурными средствами."
+bot.conclusion.cta.self_care: "Попробуйте домашние меры и наблюдайте за состоянием."
+
+# --- Language switch ----------------------------------------------------------
+bot.language.prompt: "Выберите язык:"
+bot.language.option.ru: "Русский"
+bot.language.option.kk: "Қазақша"
+bot.language.changed: "Язык переключён на {language}."
+bot.language.not_allowed: "Язык {language} недоступен для этой клиники."
+
+# --- Reminders + feedback (outgoing path) -------------------------------------
+bot.reminder.pre_visit_24h: "Напоминание: визит к {doctor} завтра в {time}."
+bot.reminder.same_day: "Напоминание: сегодня в {time} визит к {doctor}."
+bot.feedback.prompt: "Как прошёл визит к {doctor}? Поделитесь, пожалуйста, отзывом."
+bot.booking.cancelled: "Ваша запись к {doctor} на {time} отменена клиникой. При необходимости запишитесь снова."

@@ -1,0 +1,64 @@
+# FR-VWRNDR — Kazakh view-layer catalog (the single frontend i18n source).
+#
+# Flat Map<String, String> keyed by dot-notation paths (loaded by
+# com.symptree.messaging.i18n.MessageCatalog.loadFromClasspath). One disjoint key
+# set spanning BOTH paths: ingress chrome + reminder/feedback/booking-outgoing.
+# Keep in lockstep with ru.yaml — same key set, language-specific values.
+# {param} tokens are interpolated by the renderer.
+
+# --- Welcome + goal-pick menu -------------------------------------------------
+bot.welcome.text: "Сәлеметсіз бе! Симптомдарыңызды талдауға және дәрігерге жазылуға көмектесемін."
+bot.welcome.menu_prompt: "Сізге қалай көмектесе аламын?"
+bot.welcome.goal.symptom_consultation: "🩺 Симптомдарды талдау"
+bot.welcome.goal.appointment_booking: "📅 Дәрігерге жазылу"
+bot.welcome.goal.service_info: "ℹ️ Қызметтер туралы білу"
+bot.welcome.unknown_goal: "Таңдауыңызды тани алмадым. Мәзірден нұсқаны таңдаңыз."
+
+# --- Symptomizer prompts ------------------------------------------------------
+bot.symptom.prompt_main_complaint: "Сізді не мазалап жүргенін айтып беріңізші."
+bot.symptom.llm_unavailable: "Қазір жауабыңызды талдай алмаймын. Төмендегі мәзірден нұсқаны таңдаңыз."
+bot.symptom.reprompt.out_of_set: "Жауабыңызды нұсқалармен сәйкестендіре алмадым. Мәзірден бір нұсқаны таңдаңыз."
+bot.symptom.reprompt.low_confidence: "Дұрыс түсінгеніме сенімді емеспін. Мәзірден нұсқа таңдап нақтылаңызшы."
+bot.symptom.reprompt.null_pick: "Жауапты тани алмадым. Бір нұсқаны таңдаңызшы."
+bot.symptom.reprompt.non_symptom_intent: "Сұрағыңыз симптомдарға қатысты емес сияқты. Жалғастырғыңыз келсе, мәзірден нұсқаны таңдаңыз."
+bot.symptom.reprompt.menu_header: "Қолайлы нұсқаны таңдаңыз:"
+bot.symptom.no_algorithm_match: "Өкінішке орай, бұл клиникада әзірге мұндай шағымға арналған сценарий жоқ. Симптомды басқаша сипаттап көріңіз немесе мәзірден басқа нұсқаны таңдаңыз."
+
+# --- Stub goal flows ----------------------------------------------------------
+bot.booking.coming_soon: "Дәрігерге жазылу мүмкіндігі ботта жақын арада қолжетімді болады. Әзірге клиникамен тікелей хабарласыңыз."
+bot.faq.coming_soon: "Қызметтер туралы ақпарат жақын арада қосылады. Әзірге толық мәліметті клиника әкімшісінен сұрауға болады."
+
+# --- Auto-booking confirm/decline + outcome -----------------------------------
+bot.booking.confirm_slot: "{doctor} дәрігері — {datetime} — жазылуды растайсыз ба?"
+bot.booking.confirm_yes: "✅ Иә, жазылу"
+bot.booking.confirm_no: "🔄 Басқа уақыт"
+bot.booking.no_slots: "Өкінішке орай, қазір жазылуға бос уақыт жоқ. Клиникамен тікелей хабарласыңыз."
+bot.booking.confirmed: "Дайын! Сіз {doctor} дәрігеріне {datetime} жазылдыңыз. Еске салуды жібереміз."
+bot.booking.contact_clinic: "Жақсы. Қолайлы уақытты таңдау үшін клиникамен тікелей хабарласыңыз."
+
+# --- Conclusion ---------------------------------------------------------------
+# Urgency icons are view artifacts selected off the Urgency enum (AC-VWRNDR.7);
+# language-independent, so ru and kk hold the same glyph.
+bot.conclusion.urgency.emergency: "🚨"
+bot.conclusion.urgency.urgent: "⚠️"
+bot.conclusion.urgency.routine: "📌"
+bot.conclusion.urgency.self_care: "🏠"
+bot.conclusion.tests: "Алдын ала зерттеулер"
+bot.conclusion.cta.book: "Қазір жазылу"
+bot.conclusion.cta.book_prompt: "Қабылдауға жазылуға дайынсыз ба?"
+bot.conclusion.cta.emergency: "Дереу жедел жәрдемге немесе жақын маңдағы ауруханаға жүгініңіз."
+bot.conclusion.cta.pharmacy: "Рецептсіз дәрі-дәрмек алу үшін дәріханаға барыңыз."
+bot.conclusion.cta.self_care: "Үй жағдайында емделіп, жағдайыңызды бақылаңыз."
+
+# --- Language switch ----------------------------------------------------------
+bot.language.prompt: "Тілді таңдаңыз:"
+bot.language.option.ru: "Русский"
+bot.language.option.kk: "Қазақша"
+bot.language.changed: "Тіл {language} тіліне ауыстырылды."
+bot.language.not_allowed: "{language} тілі бұл клиника үшін қолжетімді емес."
+
+# --- Reminders + feedback (outgoing path) -------------------------------------
+bot.reminder.pre_visit_24h: "Еске салу: {doctor} дәрігеріне ертең {time}-де қабылдау."
+bot.reminder.same_day: "Еске салу: бүгін {time}-де {doctor} дәрігеріне қабылдау."
+bot.feedback.prompt: "{doctor} дәрігеріне қабылдау қалай өтті? Пікіріңізбен бөлісіңіз."
+bot.booking.cancelled: "{doctor} дәрігеріне {time} жазылуыңыз клиника тарапынан бас тартылды. Қажет болса, қайта жазылыңыз."

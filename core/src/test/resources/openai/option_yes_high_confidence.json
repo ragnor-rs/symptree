@@ -1,0 +1,21 @@
+{
+  "id": "chatcmpl-test-option-1",
+  "object": "chat.completion",
+  "created": 1717238400,
+  "model": "gpt-4o-2024-08-06",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"picked_option_value\":\"yes\",\"confidence\":0.9,\"clarifying_question\":null}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 100,
+    "completion_tokens": 20,
+    "total_tokens": 120
+  }
+}

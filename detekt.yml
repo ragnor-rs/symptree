@@ -1,0 +1,91 @@
+complexity:
+  CyclomaticComplexMethod:
+    active: false
+  LongMethod:
+    active: false
+  LongParameterList:
+    active: false
+  LargeClass:
+    active: false
+  TooManyFunctions:
+    active: false
+  ComplexCondition:
+    active: false
+  NestedBlockDepth:
+    active: false
+
+style:
+  NewLineAtEndOfFile:
+    active: false
+  WildcardImport:
+    active: false
+  MagicNumber:
+    active: false
+  ThrowsCount:
+    active: false
+  ReturnCount:
+    active: false
+  MaxLineLength:
+    active: false
+  UseCheckOrError:
+    active: false
+  UseRequire:
+    active: false
+  LoopWithTooManyJumpStatements:
+    active: false
+  DestructuringDeclarationWithTooManyEntries:
+    active: false
+  ForbiddenComment:
+    active: false
+  FunctionOnlyReturningConstant:
+    active: false
+  MayBeConst:
+    active: true
+  UnusedImports:
+    active: true
+  UnusedPrivateMember:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID)'
+  UnusedParameter:
+    active: true
+    allowedNames: '(_|ignored|expected)'
+  UnusedPrivateProperty:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID)'
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+  TooGenericExceptionThrown:
+    active: false
+  SwallowedException:
+    active: false
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: false
+
+performance:
+  ForEachOnRange:
+    active: false
+
+empty-blocks:
+  EmptyFunctionBlock:
+    active: true
+    ignoreOverridden: true
+  EmptyClassBlock:
+    active: true
+  EmptyDefaultConstructor:
+    active: true
+
+naming:
+  VariableNaming:
+    active: false
+  MatchingDeclarationName:
+    active: false
+  ConstructorParameterNaming:
+    active: false
+
+potential-bugs:
+  UnusedUnaryOperator:
+    active: true
+  ImplicitDefaultLocale:
+    active: false
