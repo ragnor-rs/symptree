@@ -108,7 +108,13 @@ services:
       - "8084:8084"
     volumes:
       - ./logs:/var/log
-    restart: unless-stopped
+    # on-failure, NOT unless-stopped: with no TELEGRAM_BOT_TOKEN, MessagingMain
+    # logs "Bot module idle" and returns from main(), exiting 0. Under
+    # unless-stopped that clean "nothing to do" exit was restarted on a loop
+    # forever. A crash (non-zero, incl. OOM-kill) still restarts, which is the
+    # case the policy is actually for. startPolling() never returns, so a 0 exit
+    # only ever means there was no bot to run.
+    restart: on-failure
 
   admin-panel:
     init: true
