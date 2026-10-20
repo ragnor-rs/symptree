@@ -7,7 +7,8 @@ import react from '@vitejs/plugin-react'
 // proxy target are env-overridable (VITE_PORT / VITE_API_TARGET) so the dev
 // ports can avoid whatever's reserved on the host.
 const devPort = Number(process.env.VITE_PORT) || 5173
-const apiTarget = process.env.VITE_API_TARGET || 'http://localhost:8090'
+// Must match core's own default PORT (CoreConfig: 8080) and the README quickstart.
+const apiTarget = process.env.VITE_API_TARGET || 'http://localhost:8080'
 
 export default defineConfig({
   plugins: [react()],
