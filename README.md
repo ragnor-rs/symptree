@@ -58,36 +58,67 @@ Requirements: **JDK 21**, **Docker** (for Postgres and the test suite),
 **Node 20+** (for the admin panel).
 
 ```bash
-# 1. Postgres
+# 1. Config — dev-only placeholders, enough to boot the whole stack as-is.
+#    `docker compose` reads .env automatically; `set -a` also exports it to
+#    this shell for the jars below. Do this FIRST: the postgres image refuses
+#    to initialize without a password.
+cp .env.example .env
+set -a; source .env; set +a
+
+# 2. Postgres
 docker compose up -d postgres
 
-# 2. Backend — migrations apply at startup, the demo tree is seeded automatically
-export POSTGRES_DB=symptree POSTGRES_USER=symptree_user POSTGRES_PASSWORD=dev
-export PLATFORM_ADMIN_API_KEY=dev-platform-key
-export BOT_INGRESS_SHARED_SECRET=dev-ingress BOT_INTERNAL_SHARED_SECRET=dev-internal
-export OPENAI_API_KEY=sk-...
-export SYMPTREE_PII_KEY="$(openssl rand -base64 32)"
-export ADMIN_TOKEN_SECRET="$(openssl rand -base64 32)"
-
+# 3. Backend — migrations apply at startup, the demo tree is seeded automatically.
+#    Run from the repo root: migrations are read from ./database.
 ./gradlew :core:shadowJar && java -jar core/build/libs/core.jar
 
-# 3. Create a clinic (returns a one-time admin password)
+# 4. Create a clinic (returns a one-time admin password)
 curl -X POST http://localhost:8080/api/v1/clinics \
   -H "X-API-Key: $PLATFORM_ADMIN_API_KEY" -H 'Content-Type: application/json' \
   -d '{"slug":"demo-clinic","name":"Demo Clinic","default_language":"ru",
        "allowed_languages":["ru","kk"],"admin_email":"admin@demo.test"}'
 
-# 4. Admin panel
+# 5. Admin panel
 cd admin-panel && npm install && npm run dev     # http://localhost:5173
 ```
 
-To run the bot, add a [BotFather](https://t.me/botfather) token and point it at
-the clinic:
+**A real `OPENAI_API_KEY` is required to walk the tree.** `.env.example` ships a
+placeholder so core boots and the bot answers `/start`, but the first symptom
+complaint fails: entering a journey needs the LLM to pick which tree the
+complaint belongs to, and that call has no fallback — a bad key surfaces as
+`500 internal_error`. The documented button-only degradation covers only the
+*mid-tree* step (mapping a free-text reply onto the current node's options),
+which is what keeps an in-progress session alive if the LLM drops out. Core
+checks the variable is non-blank but never validates it, so there is no way to
+boot without *something* there.
+
+To run the bot, add a [BotFather](https://t.me/botfather) token to `.env`
+(`TELEGRAM_BOT_TOKEN=`) and point it at the clinic:
 
 ```bash
-export TELEGRAM_BOT_TOKEN=... CLINIC_SLUG=demo-clinic BACKEND_URL=http://localhost:8080
+set -a; source .env; set +a
+export BACKEND_URL=http://localhost:8080
 ./gradlew :messaging:shadowJar && java -jar messaging/build/libs/messaging.jar
 ```
+
+### Full stack in Docker
+
+`docker-compose.yml` also defines `core`, `messaging` and `admin-panel`. Those
+three images **copy prebuilt artifacts** rather than compiling inside the image,
+so they must be built first — on a fresh clone `docker compose up -d` otherwise
+fails with `"/core/build/libs/core.jar": not found`:
+
+```bash
+./gradlew :core:shadowJar :messaging:shadowJar :admin-panel:buildSpa
+docker compose up -d --build
+```
+
+`core`, `postgres` and `admin-panel` (on
+[http://localhost](http://localhost), where nginx reverse-proxies `/api` → core)
+come up fine without a bot token. The `messaging` service needs a real
+`TELEGRAM_BOT_TOKEN` in `.env`: with the variable empty it logs
+`Telegram disabled … Bot module idle` and exits 0, leaving the other three
+services running normally.
 
 ## What a session looks like
 
@@ -175,8 +206,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for conventions and
   contact the clinic directly, instead of offering a date picker.
 - The pre-visit reminder for a booking made less than 24h ahead fires almost
   immediately rather than being suppressed.
-- The admin panel's weekly-hours grid is replace-on-save and opens empty each
-  visit — the API has a replacing `PUT` but no `GET`.
+- The admin panel's weekly-hours grid is replace-on-save: the `PUT` replaces a
+  doctor's full set rather than patching individual intervals.
 - A clinic-admin login is seeded only when the clinic is created; there is no
   endpoint to provision an admin for an existing clinic.
 - One bot process serves one clinic.

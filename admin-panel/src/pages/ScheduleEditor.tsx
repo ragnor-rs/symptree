@@ -22,8 +22,8 @@ import type { TimeOff } from '../api/types'
  * plus an add/remove time-off list. Client-side validation mirrors the server's
  * `end > start` / no-overlap rules and surfaces the server's 422 on failure.
  *
- * Weekly hours are replace-on-save (the PUT endpoint replaces the full set), so
- * the grid opens empty — there is no GET weekly-hours surface in M2.
+ * Weekly hours are replace-on-save: the PUT endpoint replaces the doctor's full
+ * set. The grid is seeded on mount from GET weekly-hours (see the effect below).
  */
 export function ScheduleEditor() {
   const { id } = useParams()
